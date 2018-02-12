@@ -8,14 +8,23 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
-    "bluebird": "^3.5.1",
+    "chai-match-pattern": "^1.1.0",
+    "chance": "^1.0.13",
     "config": "^1.29.2",
+    "debug": "^3.1.0",
     "express": "^4.12.3",
+    "factory-girl": "^5.0.2",
+    "faker": "^4.1.0",
+    "glob": "^7.1.2",
     "jsonapi-serializer": "^3.5.6",
     "lodash": "^4.17.4",
+    "moment": "^2.20.1",
     "mongoose": "^5.0.3",
-    "swagger-express-mw": "^0.1.0",
-    "swagger-mongoose": "^1.1.2",
+    "nyc": "^11.4.1",
+    "proxyquire": "^1.8.0",
+    "sinon-as-promised": "^4.0.3",
+    "swagger-express-mw": "^0.7.0",
+    "swagger-mongoose": "git+https://github.com/vburzynski/swagger-mongoose.git#4887ab243e68b26a27b17d734f8894a8338ceb6a",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
@@ -34,6 +43,10 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "swagger project test"
+    "serve": "yarn start",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "test": "./bin/test",
+    "coverage": "./bin/coverage"
   }
 }

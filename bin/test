@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+export NODE_ENV=test
+export TEST_ENV=true
+
+./node_modules/.bin/mocha \
+  --colors \
+  --timeout=10000 \
+  --recursive test/setup.js "test/**/*.spec.js"

@@ -1,50 +1,71 @@
-const bluebird = require('bluebird');
-const config = require('config');
+const _ = require('lodash');
 const config = require('config');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const swaggerMongoose = require('swagger-mongoose');
 const YAML = require('yamljs');
 
-module.exports = {
+const debug = require('debug')('api:db');
+
+const db = {
   isConnected: false,
   connection: null,
-  models: {},
-  schemas: {},
+  models: null,
+  schemas: null,
 
-  connect: function connect() {
+  connect: async () => {
+    debug('connect');
+
     // return active connection if one exists
-    if (this.isConnected && this.connection) {
-      return this.connection;
+    if (db.isConnected && db.connection) {
+      debug('returning connection');
+      return db.connection;
     }
 
-    // use bluebird instead
-    mongoose.Promise = bluebird;
-
-    // connect to mongoose/mongodb
-    if (mongoose.connection.readyState === 0) {
-      if (process.env.NODE_ENV === 'test') {
-        mongoose.connect(config.db.test);
-      } else {
-        mongoose.connect(config.db.prod);
-      }
+    if (_.get(mongoose, 'connection.readyState') === 0) {
+      debug('creating connection');
+      mongoose.connect(config.database);
+      db.connection = mongoose.connection;
+      db.connection.on('error', debug.bind(debug, 'connection error:'));
+      db.connection.once('open', debug.bind(debug, 'connection open.'));
+    } else {
+      debug('using existing mongoose connection');
+      db.connection = mongoose.connection;
     }
-    this.connection = mongoose.connection;
-    this.connection.on('error', console.error.bind(console, 'connection error:'));
 
-    // load api schema
+    if (!db.models && !db.schemas) {
+      debug('parsing swagger schema');
+      db.parseSwagger();
+    }
+
+    debug('connected');
+    db.isConnected = true;
+    return db.connection;
+  },
+
+  disconnect: () => {
+    debug('disconnect');
+    if (db.isConnected) {
+      debug('closing');
+      mongoose.connection.close();
+
+      debug('closed');
+      db.isConnected = false;
+    }
+  },
+
+  parseSwagger: () => {
+    debug('loading swagger yaml');
     const swaggerFile = config.get('swaggerFile');
     const yaml = fs.readFileSync(swaggerFile, 'utf8');
     const spec = YAML.parse(yaml);
-    this.swagger = spec;
+    db.swagger = spec;
 
-    // compile swagger mongoose
+    debug('generating mongoose schemas and models');
     const { models, schemas } = swaggerMongoose.compile(spec);
-    this.models = models;
-    this.schemas = schemas;
-
-    // done - we're connected
-    this.isConnected = true;
-    return this.connection;
+    db.models = models;
+    db.schemas = schemas;
   },
 };
+
+module.exports = db;

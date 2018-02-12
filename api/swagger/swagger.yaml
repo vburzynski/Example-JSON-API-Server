@@ -1,60 +1,226 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.1"
-  title: Hello World App
-# during dev, should point to your local machine
+  version: '0.0.1'
+  title: Ember JSON-API Swagger Demo
 host: localhost:10010
-# basePath prefixes all resource paths
 basePath: /
-#
 schemes:
-  # tip: remove http to make production-grade
   - http
   - https
-# format of bodies a client can send (Content-Type)
 consumes:
   - application/json
-# format of the responses to the client (Accepts)
 produces:
   - application/json
+x-swagger-mongoose:
+  key-conversion: camelcase
+  schema-options:
+    timestamps: true
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+  /users:
+    x-swagger-router-controller: users-controller
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
+      operationId: getUsers
+      summary: Gets all users
+      description: Returns a collection of all users
+      responses:
+        200:
+          description: A collection of users
+          schema:
+            $ref: '#/definitions/UsersResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      operationId: createUser
+      summary: Creates a new user
+      description: Creates a new user
       parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
+        - name: user
+          in: body
+          description: The user data.
+          required: true
+          schema:
+            $ref: '#/definitions/UserResponse'
+      responses:
+        201:
+          description: user succesfully created.
+          schema:
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: User Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /users/{id}:
+    x-swagger-router-controller: users-controller
+    get:
+      operationId: getUser
+      summary: Gets a user
+      description: Returns a single user by their identifier.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user's id
           type: string
       responses:
-        "200":
-          description: Success
+        '200':
+          description: A Person
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
+            $ref: '#/definitions/UserResponse'
+        '404':
+          description: The user does not exist or was not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
         default:
-          description: Error
+          description: unexpected error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: '#/definitions/ErrorResponse'
+    patch:
+      operationId: updateUserById
+      summary: Updates a single user by id
+      description: Returns the updated single user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user's id
+          type: string
+        - name: user
+          in: body
+          required: true
+          description: the updated user attributes
+          schema:
+            $ref: '#/definitions/UserRequest'
+      responses:
+        200:
+          description: user updated
+          schema:
+            $ref: '#/definitions/UserResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    delete:
+      operationId: removeUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The user's id
+          type: string
+      responses:
+        204:
+          description: accepted - user deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  # This route connects to a pipe within swagger-node-router and serves the swagger JSON
   /swagger:
     x-swagger-pipe: swagger_raw
-# complex objects have schema definitions
+
 definitions:
-  HelloWorldResponse:
+  # MODELS
+  User:
+    x-swagger-mongoose:
+      resource-object: true
+    type: object
     required:
-      - message
+      - type
+      - attributes
     properties:
-      message:
+      type:
         type: string
+      id:
+        type: string
+      attributes:
+        type: object
+        required:
+          - username
+        properties:
+          username:
+            type: string
+          firstName:
+            type: string
+          lastName:
+            type: string
+
+  # REQUESTS
+  UserRequest:
+    x-swagger-mongoose:
+      exclude-schema: true
+    type: object
+    additionalProperties: false
+    properties:
+      data:
+        $ref: '#/definitions/User'
+
+  # RESPONSES
+  UserResponse:
+    x-swagger-mongoose:
+      exclude-schema: true
+    type: object
+    additionalProperties: false
+    properties:
+      data:
+        $ref: '#/definitions/User'
+  UsersResponse:
+    x-swagger-mongoose:
+      exclude-schema: true
+    type: object
+    additionalProperties: false
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/User'
   ErrorResponse:
+    x-swagger-mongoose:
+      exclude-schema: true
+    type: object
     required:
-      - message
+      - errors
     properties:
-      message:
-        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: A unique identifier for this occurence
+            links:
+              type: object
+              description: A links object
+              properties:
+                about:
+                  type: string
+                  description: link that leads to details about this occurence
+            status:
+              type: string
+              description: HTTP status code
+            code:
+              type: string
+              description: Application Specific Error Code
+            title:
+              type: string
+              description: Human-readable summary of the problem
+            detail:
+              type: string
+              description: Human-readable explanation of the problem
+            source:
+              type: object
+              description: Contains references to the source of the problem
+            meta:
+              type: object
+              description: Non-standard meta-information about the issue/error
