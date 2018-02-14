@@ -1,6 +1,9 @@
+// api/repositories/repository.js
 /* eslint class-methods-use-this: 0 */
 const debug = require('debug')('api:repos:base');
 const jsonapi = require('../support/swagger-jsonapi');
+
+const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
 
 /**
  * Base Repository Class.
@@ -13,10 +16,11 @@ class Repository {
   constructor(type, db) {
     debug('constructor');
     this.type = type;
+    this.name = capitalize(type);
     this.swagger = db.swagger;
     this.connection = db.connection;
-    this.model = db.models[type];
-    this.schema = db.schemas[type];
+    this.model = db.models[this.name];
+    this.schema = db.schemas[this.name];
     this.typeMap = {};
     this.initSerializers();
   }

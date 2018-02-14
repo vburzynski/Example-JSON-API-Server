@@ -1,3 +1,4 @@
+// test/integration/database.spec.js
 const { expect } = require('chai');
 const db = require('../../api/db');
 

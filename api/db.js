@@ -1,3 +1,4 @@
+// api/db.js
 const _ = require('lodash');
 const config = require('config');
 const fs = require('fs');
@@ -23,7 +24,7 @@ const db = {
     }
 
     if (_.get(mongoose, 'connection.readyState') === 0) {
-      debug('creating connection');
+      debug('creating connection', config.database);
       mongoose.connect(config.database);
       db.connection = mongoose.connection;
       db.connection.on('error', debug.bind(debug, 'connection error:'));

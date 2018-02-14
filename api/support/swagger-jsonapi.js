@@ -1,3 +1,4 @@
+// api/support/swagger-jsonapi.js
 const _ = require('lodash');
 const { Serializer, Deserializer } = require('jsonapi-serializer');
 const debug = require('debug')('api:swagger-jsonapi');

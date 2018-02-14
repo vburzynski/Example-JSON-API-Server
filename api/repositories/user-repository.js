@@ -1,3 +1,4 @@
+// api/repositories/user-repository.js
 const Repository = require('./repository');
 const debug = require('debug')('api:repos:user');
 
@@ -5,7 +6,7 @@ const debug = require('debug')('api:repos:user');
 class UserRepository extends Repository {
   constructor(db) {
     debug('constructor');
-    super('User', db);
+    super('user', db);
   }
 }
 

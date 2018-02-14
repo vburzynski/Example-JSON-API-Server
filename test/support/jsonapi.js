@@ -1,3 +1,4 @@
+// test/support/jsonapi.js
 const _ = require('lodash');
 const { generate } = require('../../api/support/swagger-jsonapi');
 const debug = require('debug')('test:jsonapi');

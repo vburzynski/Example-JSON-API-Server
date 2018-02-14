@@ -47,6 +47,7 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "./bin/test",
-    "coverage": "./bin/coverage"
+    "coverage": "./bin/coverage",
+    "seed": "DEBUG=* CLEAR_DB=true node db/seed"
   }
 }

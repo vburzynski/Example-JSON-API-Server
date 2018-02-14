@@ -1,3 +1,4 @@
+// test/integration/routes/users/delete-user-by-id.spec.js
 const moment = require('moment');
 const { expect } = require('chai');
 const { factory } = require('factory-girl');
@@ -28,7 +29,7 @@ describe('DELETE /users/:id', () => {
       const { data } = response.body;
       expect(data).to.exist;
       expect(data).to.matchPattern({
-        type: 'Users',
+        type: 'users',
         id: user.id,
         attributes: {
           username: user.username,

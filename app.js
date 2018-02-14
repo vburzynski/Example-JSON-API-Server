@@ -1,3 +1,4 @@
+// app.js
 const Server = require('./api/server');
 
 const config = {

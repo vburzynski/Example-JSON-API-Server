@@ -1,3 +1,4 @@
+// test/integration/routes/users/patch-user-by-id.spec.js
 const moment = require('moment');
 const { expect } = require('chai');
 const { factory } = require('factory-girl');
@@ -19,7 +20,7 @@ describe('GET /users/:id', () => {
     it('should update the user', async function () {
       const updates = {
         data: {
-          type: 'Users',
+          type: 'users',
           attributes: {
             username: chance.email(),
             firstName: chance.first(),
@@ -41,7 +42,7 @@ describe('GET /users/:id', () => {
       const { data } = response.body;
       expect(data).to.exist;
       expect(data).to.matchPattern({
-        type: 'Users',
+        type: 'users',
         id: user.id,
         attributes: {
           username: updates.data.attributes.username,

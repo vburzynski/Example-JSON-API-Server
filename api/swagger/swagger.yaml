@@ -9,8 +9,10 @@ schemes:
   - https
 consumes:
   - application/json
+  - application/vnd.api+json
 produces:
   - application/json
+  - application/vnd.api+json
 x-swagger-mongoose:
   key-conversion: camelcase
   schema-options:
@@ -41,7 +43,7 @@ paths:
           description: The user data.
           required: true
           schema:
-            $ref: '#/definitions/UserResponse'
+            $ref: '#/definitions/UserRequest'
       responses:
         201:
           description: user succesfully created.

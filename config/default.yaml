@@ -1,5 +1,5 @@
 # configuration file
-database: mongodb://localhost/jsonapi_ember_demo_test
+database: mongodb://localhost/jsonapi_ember_demo_dev
 swaggerFile: ./api/swagger/swagger.yaml
 
 # values in the swagger hash are system configuration for swagger-node

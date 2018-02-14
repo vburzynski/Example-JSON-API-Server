@@ -1,3 +1,4 @@
+// test/unit/repositories/user-repository.spec.js
 const _ = require('lodash');
 const { expect } = require('chai');
 const proxyquire = require('proxyquire');
@@ -51,8 +52,8 @@ describe('User Repository', () => {
       expect(userRepo.schema).to.equal('fake-schema');
     });
 
-    it('has a type of "User"', () => {
-      expect(userRepo.type).to.equal('User');
+    it('has a type of "user"', () => {
+      expect(userRepo.type).to.equal('user');
     });
   });
 

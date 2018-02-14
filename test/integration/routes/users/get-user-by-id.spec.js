@@ -1,3 +1,4 @@
+// test/integration/routes/user/get-user-by-id.spec.js
 const _ = require('lodash');
 const moment = require('moment');
 const { expect } = require('chai');
@@ -34,7 +35,7 @@ describe('GET /users/:id', () => {
       const { data } = response.body;
       expect(data).to.exist;
       expect(data).to.matchPattern({
-        type: 'Users',
+        type: 'users',
         id: user.id,
         attributes: {
           username: user.username,

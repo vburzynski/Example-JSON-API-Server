@@ -1,3 +1,4 @@
+// test/integration/routes/users/post-users.spec.js
 const _ = require('lodash');
 const moment = require('moment');
 const { expect } = require('chai');
@@ -28,7 +29,7 @@ describe('POST /users/', () => {
       expect(response.status).to.equal(201);
       expect(response.body).to.matchPattern({
         data: {
-          type: 'Users',
+          type: 'users',
           id: _.isString,
           attributes: {
             username: user.username,

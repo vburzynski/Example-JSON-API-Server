@@ -1,3 +1,4 @@
+// test/support/express-stubs.js
 exports.createRequest = () => ({
   swagger: {},
 });
