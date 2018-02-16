@@ -1,7 +1,7 @@
-// test/unit/controllers/user-controller.spec.js
+// test/unit/controllers/users-controller.spec.js
 const _ = require('lodash');
-const faker = require('faker');
 const { expect } = require('chai');
+const { factory } = require('factory-girl');
 const expressStubs = require('../../support/express-stubs');
 const userController = require('../../../api/controllers/users-controller');
 const UserRepository = require('../../../api/repositories/user-repository');
@@ -34,11 +34,10 @@ describe('User Controller', () => {
   });
   context('#createUser', () => {
     // new user fixture, method destructures from this
-    const newUser = {
-      username: faker.internet.userName(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    };
+    let newUser;
+    beforeEach(() => {
+      newUser = factory.build('user');
+    });
     it('creates and inserts a new user', async () => {
       // stub deserializing the JSON API formatted request body
       stubUserRepo.deserialize = sinon.stub()
