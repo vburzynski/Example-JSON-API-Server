@@ -1,9 +1,5 @@
 # configuration file
-
-database:
-  prod: mongodb://localhost/jsonapi_ember_demo
-  test: mongodb://localhost/jsonapi_ember_demo_test
-
+database: mongodb://localhost/jsonapi_ember_demo_dev
 swaggerFile: ./api/swagger/swagger.yaml
 
 # values in the swagger hash are system configuration for swagger-node
@@ -31,6 +27,7 @@ swagger:
     swagger_controllers:
       - onError: json_error_handler
       - cors
+      - swagger_params_parser
       - swagger_security
       - _swagger_validate
       - express_compatibility
