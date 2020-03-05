@@ -14,7 +14,7 @@ const db = {
       collections.forEach(function (name) {
         debug(`clearing collection: ${name}`);
         const collection = db.connection.collections[name];
-        collection.remove(function () {});
+        collection.deleteMany(function () {});
       });
     }
   },
@@ -22,7 +22,7 @@ const db = {
   connect: async () => {
     debug('connect db');
     if (_.get(mongoose, 'connection.readyState') === 0) {
-      mongoose.connect(config.database);
+      mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
       db.connection = mongoose.connection;
       db.connection.on('error', debug.bind(debug, 'connection error:'));
       db.connection.once('open', debug.bind(debug, 'connection open.'));

@@ -42,28 +42,28 @@ describe('Unit — Database', () => {
 
   context('#disconnect', () => {
     context('connection exists', () => {
-      it('closes the connection', () => {
+      it('closes the connection', async () => {
         db.isConnected = true;
 
         stubs.mongoose.connection = {
           close: sinon.stub(),
         };
 
-        db.disconnect();
+        await db.disconnect();
 
         expect(db.isConnected).to.be.false;
         expect(stubs.mongoose.connection.close).to.have.been.calledOnce;
       });
     });
     context('connection does not exist', () => {
-      it('does nothing', () => {
+      it('does nothing', async () => {
         db.isConnected = false;
 
         stubs.mongoose.connection = {
           close: sinon.stub(),
         };
 
-        db.disconnect();
+        await db.disconnect();
 
         expect(db.isConnected).to.be.false;
         expect(stubs.mongoose.connection.close).to.have.not.been.called;

@@ -212,7 +212,7 @@ describe('User Repository', () => {
 
   context('#drop', () => {
     it('drops all records from the collection', () => {
-      _.set(mocks, 'model.collection.remove', sinon.stub().resolves(true));
+      _.set(mocks, 'model.collection.deleteMany', sinon.stub().resolves(true));
       userRepo.model = mocks.model;
       const result = userRepo.drop();
       return expect(result).to.eventually.be.true;

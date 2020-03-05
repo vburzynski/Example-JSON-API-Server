@@ -14,7 +14,7 @@ describe('Database', () => {
     await db.disconnect();
   });
   it('closes the connection to the mongo database', async () => {
-    db.disconnect();
+    await db.disconnect();
     expect(db.connection.readyState).to.equal(DISCONNECTED);
     await db.connect();
   });

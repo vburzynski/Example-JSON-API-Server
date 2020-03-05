@@ -25,7 +25,7 @@ async function seed() {
     const actions = [];
     _.each(collections, (collection) => {
       debug(`clearing ${collection.collectionName}`);
-      actions.push(collection.remove({}));
+      actions.push(collection.deleteMany({}));
     });
     await actions;
   }
