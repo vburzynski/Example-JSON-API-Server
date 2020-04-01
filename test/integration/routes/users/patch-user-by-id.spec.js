@@ -6,7 +6,7 @@ const debug = require('debug')('test'); // eslint-disable-line
 
 const validTimestamp = value => moment(value, moment.ISO_8601, true).isValid();
 
-describe('GET /users/:id', () => {
+describe('PATCH /users/:id', () => {
   let user;
   let chance;
   let userModel;

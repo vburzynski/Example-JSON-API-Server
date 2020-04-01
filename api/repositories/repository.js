@@ -107,7 +107,7 @@ class Repository {
    * @returns {Promise}
    */
   drop() {
-    return this.model.collection.remove();
+    return this.model.collection.deleteMany();
   }
 
   /**

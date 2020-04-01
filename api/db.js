@@ -25,7 +25,7 @@ const db = {
 
     if (_.get(mongoose, 'connection.readyState') === 0) {
       debug('creating connection', config.database);
-      mongoose.connect(config.database);
+      mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
       db.connection = mongoose.connection;
       db.connection.on('error', debug.bind(debug, 'connection error:'));
       db.connection.once('open', debug.bind(debug, 'connection open.'));
@@ -44,11 +44,11 @@ const db = {
     return db.connection;
   },
 
-  disconnect: () => {
+  disconnect: async () => {
     debug('disconnect');
     if (db.isConnected) {
       debug('closing');
-      mongoose.connection.close();
+      await mongoose.connection.close();
 
       debug('closed');
       db.isConnected = false;
