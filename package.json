@@ -13,7 +13,7 @@
     "express": "^4.12.3",
     "glob": "^7.1.6",
     "jsonapi-serializer": "^3.6.6",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "mongoose": "^5.9.0",
     "swagger-express-mw": "^0.7.0",
