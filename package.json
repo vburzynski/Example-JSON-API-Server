@@ -14,7 +14,7 @@
     "glob": "^7.1.6",
     "jsonapi-serializer": "^3.6.6",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.9.0",
     "swagger-express-mw": "^0.7.0",
     "swagger-mongoose": "git+https://github.com/vburzynski/swagger-mongoose.git#4887ab243e68b26a27b17d734f8894a8338ceb6a",
